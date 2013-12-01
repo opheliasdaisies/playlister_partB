@@ -1,3 +1,8 @@
+require "./spec_helper"
+require "./lib/artist"
+require "./lib/song"
+require "./lib/genre"
+
 describe "playlister" do
   it 'Can initialize an Artist' do
     lambda {Artist.new}.should_not raise_error
@@ -126,18 +131,26 @@ describe "playlister" do
   # Complete any song test that is pending (undefined).
 
   it 'Can initialize a song' do
-
+    lambda {Song.new}.should_not raise_error
   end
 
   it 'A song can have a name' do
-
+    song = Song.new
+    song.name = "Sixteen Salteens"
+    song.name.should eq("Sixteen Salteens")
   end
 
   it 'A song can have a genre' do
-
+    song = Song.new
+    new_genre = Genre.new
+    song.genre = new_genre
+    song.genre.should eq(new_genre)
   end
 
   it 'A song has an artist' do
-
+    song = Song.new
+    new_artist = Artist.new
+    song.artist = new_artist
+    song.artist.should eq(new_artist)
   end
 end
