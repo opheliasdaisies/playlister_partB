@@ -68,25 +68,40 @@ end
 def how_to_browse
 	puts "Browse by artist or genre?"
 	artist_genre = gets.chomp.downcase
+	stock_responses(artist_genre)
 	if artist_genre == "artist"
 		list_artists
+		select_artist
 	elsif artist_genre == "genre"
 		list_genres
-	elsif artist_genre == "exit"
-		exit
-	elsif artist_genre == "help"
-		help
-		how_to_browse
 	else
-		puts "I did not understand that. You can type 'exit' at any time to exit the program."
 		how_to_browse
 	end
 end
 
 def list_artists
-	names = []
-	Artist.all.each {|artist| names << artist.name}
-	puts names
+	puts "There are #{Artist.count} artists available. They are:"
+	artist_list = []
+	Artist.all.each do |artist|
+		artist_list << "#{artist.name} -- #{artist.songs_count} Songs"
+	end
+	puts artist_list
+end
+
+def select_artist
+	puts "Select Artist"
+	artist_choice = gets.chomp.downcase
+	stock_responses(artist_choice)
+	Artist.all.each do |artist|
+		if artist.name.downcase == artist_choice
+			puts "#{artist.name} - #{artist.songs_count} Songs"
+			artist.songs.each do |song|
+				puts "#{artist.songs.index(song) + 1} -- #{song.name} -- #{song.genre.name}"
+			end
+		else
+			select_artist
+		end
+	end
 end
 
 def list_genres
@@ -95,12 +110,28 @@ def list_genres
 	puts genres
 end
 
-def help
-	puts "'exit' exits program"
+def stock_responses(response)
+	if response == "exit"
+		puts "Goodybe."
+		exit
+	elsif response == "help"
+		help		
+	elsif response == "list artists"
+		list_artists
+	elsif response == "list genres"
+		list_genres
+	elsif response == "select artist"
+		select_artist
+	else
+		puts "I did not understand that."
+	end
 end
 
-def exit
-	puts "Goodbye."
+def help
+	puts "'exit' exits program"
+	puts "'help' brings up a list of options"
+	puts "'list artists' lists all artists"
+	puts "'list genres' lists all genres"
 end
 
 song_list = song_list(songs_array)
