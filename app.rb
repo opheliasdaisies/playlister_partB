@@ -65,14 +65,12 @@ def return_or_create_artist(artist_name)
 end
 
 #User Interface Methods
-def playlister
+def playlister(songs_array)
+	song_list = song_list(songs_array)
 	puts "Browse by artist or genre?"
 	artist_genre = gets.chomp.downcase
-	stock_responses(artist_genre)
-	if artist_genre == "artist"
-		list_artists
-		select_artist
-	elsif artist_genre == "genre"
+	responses(artist_genre)
+	if artist_genre == "genre"
 		list_genres
 		select_genre
 	else
@@ -88,23 +86,25 @@ def list_artists
 		artist_list << "#{artist.name} -- #{artist.songs_count} Songs"
 	end
 	puts artist_list
+	select_artist
 end
 
 def select_artist
 	puts "Select Artist"
 	artist_choice = gets.chomp.downcase
-	stock_responses(artist_choice)
+	responses(artist_choice)
+	artist_match(response)
+end
+
+def artist_match(artist_choice)
 	Artist.all.each do |artist|
 		if artist.name.downcase == artist_choice
 			puts "#{artist.name} - #{artist.songs_count} Songs"
 			artist.songs.each do |song|
 				puts "#{artist.songs.index(song) + 1} -- #{song.name} -- #{song.genre.name}"
 			end
-			return
 		end
 	end
-	puts "I did not understand that."
-	select_artist
 end
 
 def list_genres
@@ -119,34 +119,45 @@ end
 def select_genre
 	puts "Select Genre"
 	genre_choice = gets.chomp.downcase
-	stock_responses(genre_choice)
+	responses(genre_choice)
+	genre_match(genre_choice)
+end
+
+def genre_match(genre_choice)
 	Genre.all.each do |genre|
 		if genre_choice == genre.name.downcase
 			puts "The #{genre.name.capitalize} genre has #{genre.songs.length} Songs and #{genre.artists.length} Artists:"
 			genre.songs.each do |song|
 				puts "#{genre.songs.index(song)+1}. #{song.name} -- #{song.artist.name}"
 			end
-			return
 		end
 	end
-	puts "I did not understand that."
-	select_genre
 end
 
-def stock_responses(response)
+def song_match(song_choice)
+
+end
+
+def responses(response)
 	if response == "exit"
 		puts "Goodybe."
 		exit
 	elsif response == "help"
 		help		
-	elsif response == "list artists"
+	elsif response == "list artists" || response == "artist"
 		list_artists
-	elsif response == "list genres"
+	elsif response == "list genres" || response == "genre"
 		list_genres
 	elsif response == "select artist"
 		select_artist
 	elsif response == "select genre"
 		select_genre
+	else
+		artist_match(response)
+		genre_match(response)
+		puts "Please make a new selection."
+		new_response = gets.chomp
+		responses(new_response)
 	end
 end
 
@@ -159,5 +170,5 @@ def help
 	puts "'select genre' allows you to select a genre"
 end
 
-song_list = song_list(songs_array)
-playlister
+
+playlister(songs_array)
