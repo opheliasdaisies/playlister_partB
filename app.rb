@@ -49,21 +49,23 @@ def create_genre(genre)
 end
 
 def genre_exists?(song_genre)
-	Genre::GENRES.each do |genre|
-		genre.name == song_genre ? genre_exists = true : genre_exists = false
+	Genre.all.each do |genre|
+		return true if genre.name == song_genre
 	end
+	false
 end
 
 def create_artist(artist)
 	return if artist_exist?(artist)
 	new_artist = Artist.new
-	artist.name = artist
+	new_artist.name = artist
 end
 
 def artist_exist?(song_artist)
-	Artist::ARTISTS.each do |artist|
-		artist.name == song_artist ? artist_exists = true : artist_exists = false
+	Artist.all.each do |artist|
+		return true if artist.name == song_artist
 	end
+	false
 end
 
 
