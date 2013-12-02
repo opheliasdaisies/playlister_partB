@@ -75,6 +75,7 @@ def how_to_browse
 	elsif artist_genre == "genre"
 		list_genres
 	else
+		puts "I did not understand that."
 		how_to_browse
 	end
 end
@@ -99,6 +100,7 @@ def select_artist
 				puts "#{artist.songs.index(song) + 1} -- #{song.name} -- #{song.genre.name}"
 			end
 		else
+			puts "I did not understand that."
 			select_artist
 		end
 	end
@@ -106,8 +108,17 @@ end
 
 def list_genres
 	genres = []
-	Genre.all.each {|genre| genres << genre.name}
+	Genre.all.each do |genre| 
+		genre.song.sort
+	end
 	puts genres
+end
+
+def select_genre
+	puts "Select Genre"
+	genre_choice = gets.chomp.downcase
+	stock_responses(genre_choice)
+	puts "Selecting By Genre Coming Soon"
 end
 
 def stock_responses(response)
@@ -122,8 +133,6 @@ def stock_responses(response)
 		list_genres
 	elsif response == "select artist"
 		select_artist
-	else
-		puts "I did not understand that."
 	end
 end
 
