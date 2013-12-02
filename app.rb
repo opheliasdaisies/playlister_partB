@@ -100,11 +100,11 @@ def select_artist
 			artist.songs.each do |song|
 				puts "#{artist.songs.index(song) + 1} -- #{song.name} -- #{song.genre.name}"
 			end
-		else
-			puts "I did not understand that."
-			select_artist
+			return
 		end
 	end
+	puts "I did not understand that."
+	select_artist
 end
 
 def list_genres
@@ -126,11 +126,11 @@ def select_genre
 			genre.songs.each do |song|
 				puts "#{genre.songs.index(song)+1}. #{song.name} -- #{song.artist.name}"
 			end
-		else
-			puts "I did not understand that."
-			select_genre
+			return
 		end
 	end
+	puts "I did not understand that."
+	select_genre
 end
 
 def stock_responses(response)
