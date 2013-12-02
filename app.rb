@@ -107,11 +107,12 @@ def select_artist
 end
 
 def list_genres
-	genres = []
-	Genre.all.each do |genre| 
-		genre.song.sort
+	genres_sorted = Genre.all.sort_by do |genre| 
+		genre.songs.length
 	end
-	puts genres
+	genres_sorted.reverse.each do |genre|
+		puts "#{genre.name.capitalize}: #{genre.songs.length} Songs, #{genre.artists.length} Artists"
+	end
 end
 
 def select_genre
