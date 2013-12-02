@@ -1,6 +1,7 @@
 require_relative "./lib/artist.rb"
 require_relative "./lib/genre.rb"
 require_relative "./lib/song.rb"
+require "awesome_print"
 
 songs_array = Dir.entries("data").select {|f| !File.directory? f}
 
@@ -15,6 +16,7 @@ def song_list(array)
 		new_genre = return_or_create_genre(song_genre)
 		new_artist = return_or_create_artist(song_artist)
 		new_song.genre = new_genre
+		new_artist.add_song(new_song)
 	end
 	songs
 end
@@ -41,35 +43,27 @@ def create_song(song)
 	new_song
 end
 
-def return_or_create_genre(genre)
+def return_or_create_genre(genre_name)
 	Genre.all.each do |genre|
-		return genre if genre.name == genre
+		return genre if genre.name == genre_name
 	end
 	new_genre = Genre.new
-	new_genre.name = genre
+	new_genre.name = genre_name
 	new_genre
 end
 
-def return_or_create_artist(artist)
+def return_or_create_artist(artist_name)
 	Artist.all.each do |artist|
-		return artist if artist.name == artist
+		return artist if artist.name == artist_name
 	end
 	new_artist = Artist.new
-	new_artist.name = artist
+	new_artist.name = artist_name
 	new_artist
 end
 
-def artist_exist?(song_artist)
-
-	false
-end
 
 
 
-
-p song_list = song_list(songs_array)
-# song_list.each do |song|
-# 	p song.genre
-# end
-p Genre.all
-p Artist.all
+song_list = song_list(songs_array)
+Genre.all
+Artist.all
