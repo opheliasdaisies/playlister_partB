@@ -65,7 +65,7 @@ def return_or_create_artist(artist_name)
 end
 
 #User Interface Methods
-def how_to_browse
+def playlister
 	puts "Browse by artist or genre?"
 	artist_genre = gets.chomp.downcase
 	stock_responses(artist_genre)
@@ -77,7 +77,7 @@ def how_to_browse
 		select_genre
 	else
 		puts "I did not understand that."
-		how_to_browse
+		playlister
 	end
 end
 
@@ -160,4 +160,4 @@ def help
 end
 
 song_list = song_list(songs_array)
-how_to_browse
+playlister
