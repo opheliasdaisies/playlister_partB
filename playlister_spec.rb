@@ -2,6 +2,8 @@ require "./spec_helper"
 require "./lib/artist"
 require "./lib/song"
 require "./lib/genre"
+require "./lib/parser"
+require "./lib/playlister"
 
 describe "playlister" do
   it 'Can initialize an Artist' do
@@ -153,4 +155,87 @@ describe "playlister" do
     song.artist = new_artist
     song.artist.should eq(new_artist)
   end
+
+  it "Can return all the songs in a directory" do
+    Parser.new("data").songs_array.should be_an(Array)
+  end
+
+  it "Can return the song artist" do
+    songs = Parser.new("data")
+    songs.get_artist("Adele - Someone Like You [country].mp3").should eq("Adele")
+  end
+
+  it "Can return the song name" do
+    songs = Parser.new("data")
+    songs.get_name("Adele - Someone Like You [country].mp3").should eq("Someone Like You")
+  end
+
+  it "Can return the song genre" do
+    songs = Parser.new("data")
+    songs.get_genre("Adele - Someone Like You [country].mp3").should eq("country")
+  end
+
+  it "Can make a Song object" do
+    songs = Parser.new("data")
+    songs.create_song("Adele").should be_a(Song)
+  end
+
+  it "will return the existing genre if the genre exists" do
+    Genre.reset_genres
+    genre = Genre.new
+    genre.name = "rap"
+    songs = Parser.new("data")
+    songs.return_or_create_genre("rap").should eq(genre)
+  end
+
+  it "will return the new genre if the genre does not exist" do
+    Genre.reset_genres
+    genre = Genre.new
+    genre.name = "rap"
+    songs = Parser.new("data")
+    songs.return_or_create_genre("dance").should_not eq(genre)
+  end
+
+  it "will return a new genre if the genre does not exist" do
+    Genre.reset_genres
+    genre = Genre.new
+    genre.name = "rap"
+    songs = Parser.new("data")
+    songs.return_or_create_genre("dance").should be_a(Genre)
+  end
+
+  it "will return the existing artist if the artist exists" do
+    Artist.reset_artists
+    artist = Artist.new
+    artist.name = "A$AP Rocky"
+    songs = Parser.new("data")
+    songs.return_or_create_artist("A$AP Rocky").should eq(artist)
+  end
+
+  it "will return the new artist if the artist does not exist" do
+    Artist.reset_artists
+    artist = Artist.new
+    artist.name = "A$AP"
+    songs = Parser.new("data")
+    songs.return_or_create_artist("Adele").should_not eq(artist)
+  end
+
+  it "will return a new genre if the genre does not exist" do
+    Artist.reset_artists
+    artist = Artist.new
+    artist.name = "A$AP"
+    songs = Parser.new("data")
+    songs.return_or_create_artist("Adele").should be_a(Artist)
+  end
+
+  # return to this test after learning stubbing
+  # it "will return song, artist, and genre objects" do
+  #   songs = Parser.new("data")
+  #   songs_array = ["A$AP Rocky - Peso [dance].mp3"]
+  #   songs.songs_list
+  #   songs[0].name.should eq("Peso")
+  # end
+
+  
+
 end
