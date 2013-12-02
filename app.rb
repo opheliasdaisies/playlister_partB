@@ -75,13 +75,6 @@ def playlister(all_songs)
 	puts "Browse by artist or genre?"
 	artist_genre = gets.chomp.downcase
 	responses(all_songs, artist_genre)
-	if artist_genre == "genre"
-		list_genres(all_songs)
-		select_genre(all_songs)
-	else
-		puts "I did not understand that."
-		playlister(all_songs)
-	end
 end
 
 def list_artists(all_songs)
