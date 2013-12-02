@@ -108,8 +108,10 @@ def artist_match(all_songs, artist_choice)
 			artist.songs.each do |song|
 				puts "#{artist.songs.index(song) + 1}. #{song.name} -- #{song.genre.name.capitalize}"
 			end
+			return true
 		end
 	end
+	false
 end
 
 def list_genres(all_songs)
@@ -135,8 +137,10 @@ def genre_match(all_songs, genre_choice)
 			genre.songs.each do |song|
 				puts "#{genre.songs.index(song)+1}. #{song.name} -- #{song.artist.name}"
 			end
+			return true
 		end
 	end
+	false
 end
 
 def song_match(all_songs, song_choice)
@@ -145,8 +149,10 @@ def song_match(all_songs, song_choice)
 			puts "#{song.name}"
 			puts "Artist: #{song.artist.name}"
 			puts "Genre: #{song.genre.name.capitalize}"
+			return true
 		end
 	end
+	false
 end
 
 def responses(all_songs, response)
@@ -163,14 +169,15 @@ def responses(all_songs, response)
 		select_artist(all_songs)
 	elsif response == "select genre"
 		select_genre(all_songs)
+	elsif artist_match(all_songs, response)
+	elsif genre_match(all_songs, response)
+	elsif song_match(all_songs, response)
 	else
-		artist_match(all_songs, response)
-		genre_match(all_songs, response)
-		song_match(all_songs, response)
-		puts "Make a selection."
-		new_response = gets.chomp
-		responses(all_songs, new_response)
+		puts "Sorry, I did not understand that. Type 'help' for a list of commands."
 	end
+	puts "Make a selection."
+	new_response = gets.chomp
+	responses(all_songs, new_response)
 end
 
 def help(all_songs)
