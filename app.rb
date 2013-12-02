@@ -65,8 +65,7 @@ def return_or_create_artist(artist_name)
 end
 
 #User Interface Methods
-def playlister(songs_array)
-	song_list = song_list(songs_array)
+def playlister
 	puts "Browse by artist or genre?"
 	artist_genre = gets.chomp.downcase
 	responses(artist_genre)
@@ -101,7 +100,7 @@ def artist_match(artist_choice)
 		if artist.name.downcase == artist_choice
 			puts "#{artist.name} - #{artist.songs_count} Songs"
 			artist.songs.each do |song|
-				puts "#{artist.songs.index(song) + 1} -- #{song.name} -- #{song.genre.name}"
+				puts "#{artist.songs.index(song) + 1}. #{song.name} -- #{song.genre.name.capitalize}"
 			end
 		end
 	end
@@ -170,5 +169,5 @@ def help
 	puts "'select genre' allows you to select a genre"
 end
 
-
-playlister(songs_array)
+song_list = song_list(songs_array)
+playlister
