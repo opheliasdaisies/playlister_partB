@@ -12,9 +12,9 @@ def song_list(array)
 		song_genre = get_genre(song)
 		new_song = create_song(song_name)		
 		songs << new_song
-		new_genre = create_genre(song_genre)
-		new_artist = create_artist(song_artist)
-		# new_song.genre = new_genre
+		new_genre = return_or_create_genre(song_genre)
+		new_artist = return_or_create_artist(song_artist)
+		new_song.genre = new_genre
 	end
 	songs
 end
@@ -36,35 +36,31 @@ def get_genre(song)
 end
 
 def create_song(song)
-	new_song = song.downcase.gsub(" ", "_")
 	new_song = Song.new
 	new_song.name = song
 	new_song
 end
 
-def create_genre(genre)
-	return if genre_exists?(genre)
+def return_or_create_genre(genre)
+	Genre.all.each do |genre|
+		return genre if genre.name == genre
+	end
 	new_genre = Genre.new
 	new_genre.name = genre
+	new_genre
 end
 
-def genre_exists?(song_genre)
-	Genre.all.each do |genre|
-		return true if genre.name == song_genre
+def return_or_create_artist(artist)
+	Artist.all.each do |artist|
+		return artist if artist.name == artist
 	end
-	false
-end
-
-def create_artist(artist)
-	return if artist_exist?(artist)
 	new_artist = Artist.new
 	new_artist.name = artist
+	new_artist
 end
 
 def artist_exist?(song_artist)
-	Artist.all.each do |artist|
-		return true if artist.name == song_artist
-	end
+
 	false
 end
 
