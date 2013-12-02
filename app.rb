@@ -16,6 +16,7 @@ def song_list(array)
 		new_genre = return_or_create_genre(song_genre)
 		new_artist = return_or_create_artist(song_artist)
 		new_song.genre = new_genre
+		new_song.artist = new_artist
 		new_artist.add_song(new_song)
 	end
 	songs
@@ -63,7 +64,6 @@ end
 
 
 
-
 song_list = song_list(songs_array)
-Genre.all
-Artist.all
+genre_list = Genre.all
+artist_list = Artist.all
