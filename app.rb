@@ -3,8 +3,10 @@ require_relative "./lib/genre.rb"
 require_relative "./lib/song.rb"
 require "awesome_print"
 
+#Pull file names from directory
 songs_array = Dir.entries("data").select {|f| !File.directory? f}
 
+#Parser methods
 def song_list(array)
 	songs = []
 	array.each do |song|
@@ -62,8 +64,44 @@ def return_or_create_artist(artist_name)
 	new_artist
 end
 
+#User Interface Methods
+def how_to_browse
+	puts "Browse by artist or genre?"
+	artist_genre = gets.chomp.downcase
+	if artist_genre == "artist"
+		list_artists
+	elsif artist_genre == "genre"
+		list_genres
+	elsif artist_genre == "exit"
+		exit
+	elsif artist_genre == "help"
+		help
+		how_to_browse
+	else
+		puts "I did not understand that. You can type 'exit' at any time to exit the program."
+		how_to_browse
+	end
+end
 
+def list_artists
+	names = []
+	Artist.all.each {|artist| names << artist.name}
+	puts names
+end
+
+def list_genres
+	genres = []
+	Genre.all.each {|genre| genres << genre.name}
+	puts genres
+end
+
+def help
+	puts "'exit' exits program"
+end
+
+def exit
+	puts "Goodbye."
+end
 
 song_list = song_list(songs_array)
-genre_list = Genre.all
-artist_list = Artist.all
+how_to_browse
